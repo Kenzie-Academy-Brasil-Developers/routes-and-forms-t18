@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { HomePage } from "../pages/HomePage";
 import { RegisterPage } from "../pages/RegisterPage";
-import { ContactPage } from "../pages/ContactPage";
+import { UserPage } from "../pages/UserPage";
 import { ErrorPage } from "../pages/ErrorPage";
 
 // Routes - Componente pai de todas as rotas
@@ -14,7 +14,7 @@ export const RoutesMain = () => {
         <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/user" element={<UserPage />} />
             <Route path="*" element={<ErrorPage />} />
         </Routes>
     )

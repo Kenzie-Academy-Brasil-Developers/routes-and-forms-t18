@@ -2,7 +2,7 @@ import { forwardRef, useState } from "react";
 import styles from "./style.module.scss";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
-export const InputPassword = forwardRef(({ label, ...rest }, ref) => {
+export const InputPassword = forwardRef(({ error, label, ...rest }, ref) => {
    const [isHidden, setIsHidden] = useState(true);
 
    return (
@@ -14,6 +14,7 @@ export const InputPassword = forwardRef(({ label, ...rest }, ref) => {
                {isHidden ? <MdVisibility /> : <MdVisibilityOff />}
             </button>
          </div>
+         {error ? <p>{error.message}</p> : null}
       </div>
    );
 });
