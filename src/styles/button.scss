@@ -37,6 +37,11 @@
             background: var(--color-pink);
         }
     }
+
+    &:disabled{
+        cursor: not-allowed;
+        opacity: .5;
+    }
 }
 
 .link {

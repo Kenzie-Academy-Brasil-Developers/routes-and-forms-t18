@@ -4,3 +4,29 @@
     font-weight: 800;
     color: var(--color-black);
 }
+
+.title{
+    font-family: var(--font-primary);
+    font-size: clamp(1.5rem, 5vw ,2.125rem);
+    font-weight: 800;
+    color: var(--color-black);
+
+    &.center{
+        text-align: center;
+    }
+}
+
+.paragraph{
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: var(--color-black);
+
+    &.bold, strong{
+        font-weight: 800;
+    }
+
+    &.white{
+        color: var(--color-white);
+    }
+}

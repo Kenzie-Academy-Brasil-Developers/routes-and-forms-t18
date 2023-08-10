@@ -1,9 +1,17 @@
+import Logo from "../../assets/LogoWhite.svg";
+import styles from "./style.module.scss";
+
 export const Footer = () => {
-    return(
-        <footer>
-            <div className="container">
-                <p>&copy; Todos os direitos reservados - Otavio </p>
-            </div>            
-        </footer>
-    )
-}
+   return (
+      <footer className={styles.footer}>
+         <div className="container">
+            <div className={styles.flexBox}>
+               <img src={Logo} alt="Logo Scraplex" />
+               <p className="paragraph white">
+                  &copy; Todos os direitos reservados - Otavio
+               </p>
+            </div>
+         </div>
+      </footer>
+   );
+};

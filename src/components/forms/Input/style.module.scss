@@ -9,5 +9,15 @@
         padding: 0 20px;
         height: 3.5rem;
         background: var(--color-white);
+       
+
+        &:disabled{
+            opacity: .5;
+        }
+    }
+
+    p{
+        margin-top: .5rem;
+        color: red;
     }
 }
