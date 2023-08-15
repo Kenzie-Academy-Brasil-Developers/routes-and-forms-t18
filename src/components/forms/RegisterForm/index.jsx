@@ -4,49 +4,24 @@ import { Input } from "../Input";
 import { InputPassword } from "../InputPassword";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerFormSchema } from "./registerFormSchema";
-import { api } from "../../../services/api";
-import { useState } from "react";
-
-/*
-{
-    "name": "José da Silva",
-    "email": "josedasilva@email.com",
-    "password": "123456",
-} 
-*/
+import { useContext, useState } from "react";
+import { UserContext } from "../../../providers/UserContext";
 
 export const RegisterForm = () => {
    const {
       register,
       handleSubmit,
       formState: { errors, isValid, isDirty },
-      watch,
    } = useForm({      
       resolver: zodResolver(registerFormSchema),
    });
 
    const [loading, setLoading] = useState(false);
-
-   const navigate = useNavigate();
-
-   const userRegister = async (formData) => {
-      try {
-         setLoading(true);
-         await api.post("/users", formData);
-         navigate("/");
-         alert("Cadastro realizado com sucesso!");
-      } catch (error) {
-         console.log(error);
-         if (error.response?.data === "Email already exists") {
-            alert("Usuário já cadastrado");
-         }
-      } finally {
-         setLoading(false);
-      }
-   };
+  
+   const { userRegister } = useContext(UserContext);
 
    const submit = (formData) => {
-      userRegister(formData);
+      userRegister(formData, setLoading);
    };
 
    return (

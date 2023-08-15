@@ -1,13 +1,13 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Input } from "../Input";
 import { InputPassword } from "../InputPassword";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginFormSchema } from "./loginFormSchema";
-import { useState } from "react";
-import { api } from "../../../services/api";
+import { useContext, useState } from "react";
+import { UserContext } from "../../../providers/UserContext";
 
-export const LoginForm = ({setUser}) => {
+export const LoginForm = () => {
    const {
       register,
       handleSubmit,
@@ -17,32 +17,12 @@ export const LoginForm = ({setUser}) => {
       resolver: zodResolver(loginFormSchema),
    });
 
-   const navigate = useNavigate();
+   const [loading, setLoading] = useState(false);  
 
-   const [loading, setLoading] = useState(false);
-
-   // data, loading, error
-   const userLogin = async (formData) => {
-      try {
-         setLoading(true);
-         const { data } = await api.post("/login", formData);
-         setUser(data.user);
-         localStorage.setItem("@TOKEN", data.accessToken);
-         reset();
-         navigate("/user");
-         
-      } catch (error) {
-         console.log(error);
-         if(error.response?.data === "Incorrect password"){
-            alert("O e-mail e a senha não correspondem.");
-         }
-      } finally {
-         setLoading(false);
-      }
-   }  
+   const { userLogin } = useContext(UserContext);
 
    const submit = (formData) => {
-      userLogin(formData);      
+      userLogin(formData, setLoading, reset);      
    };
 
    return (

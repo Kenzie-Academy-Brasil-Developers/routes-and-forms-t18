@@ -1,10 +1,10 @@
 import { Footer } from "../Footer"
 import { Header } from "../Header"
 
-export const DefaultTemplate = ({children, user, userLogout}) => {
+export const DefaultTemplate = ({children}) => {
     return(
         <>
-            <Header user={user} userLogout={userLogout} />
+            <Header />
             {children}
             <Footer />
         </>
