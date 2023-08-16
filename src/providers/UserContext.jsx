@@ -39,7 +39,7 @@ export const UserProvider = ({ children }) => {
          const { data } = await api.post("/login", formData);
          setUser(data.user);
          localStorage.setItem("@TOKEN", data.accessToken);
-         localStorage.setItem("@TOKEN", data.user.id);
+         localStorage.setItem("@USERID", data.user.id);
          reset();
          navigate("/user");
       } catch (error) {
