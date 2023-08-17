@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../services/api";
 import { toast } from "react-toastify";
 
@@ -9,11 +9,16 @@ export const UserProvider = ({ children }) => {
    const [user, setUser] = useState(null);
    const [loading, setLoading] = useState(false);
 
+   const { state } = useLocation();
+
    const navigate = useNavigate();
+
+   //acontece na inicialização
+   const pathname = window.location.pathname;
 
    useEffect(() => {
       const token = localStorage.getItem("@TOKEN");
-      const userId = localStorage.getItem("@USERID");
+      const userId = localStorage.getItem("@USERID");      
 
       const getUser = async () => {
          try{
@@ -24,7 +29,7 @@ export const UserProvider = ({ children }) => {
                }
             });
             setUser(data);
-            navigate("/user");
+            navigate(pathname);
          } catch (error) {
             console.log(error);
          } finally {
@@ -45,7 +50,7 @@ export const UserProvider = ({ children }) => {
          localStorage.setItem("@TOKEN", data.accessToken);
          localStorage.setItem("@USERID", data.user.id);
          reset();
-         navigate("/user");
+         navigate(state?.lastRoute ? state.lastRoute : pathname);
       } catch (error) {
          console.log(error);
          if (error.response?.data === "Incorrect password") {
