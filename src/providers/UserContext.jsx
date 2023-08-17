@@ -18,10 +18,14 @@ export const UserProvider = ({ children }) => {
       const getUser = async () => {
          try{
             setLoading(true);
-            const { data } = await api.get(`/users/${userId}`);
+            const { data } = await api.get(`/users/${userId}`, {
+               headers: {
+                  Authorization: `Bearer ${token}`
+               }
+            });
             setUser(data);
             navigate("/user");
-         } catch {
+         } catch (error) {
             console.log(error);
          } finally {
             setLoading(false);
