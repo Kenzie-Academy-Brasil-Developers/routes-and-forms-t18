@@ -1,4 +1,5 @@
 import { DefaultTemplate } from "../../components/DefaultTemplate";
+import { ScrapList } from "../../components/ScrapList";
 import styles from "./style.module.scss";
 
 export const UserPage = () => {
@@ -6,7 +7,7 @@ export const UserPage = () => {
       <DefaultTemplate>
          <main className={styles.userPage}>
             <div className="container">
-               <h1 className="title">Desculpe! Aplicação em desenvolvimento...</h1>
+               <ScrapList />
             </div>
          </main>
       </DefaultTemplate>
