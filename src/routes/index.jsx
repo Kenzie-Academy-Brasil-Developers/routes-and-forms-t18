@@ -7,6 +7,7 @@ import { PrivateRoutes } from "./PrivateRoutes";
 import { PublicRoutes } from "./PublicRoutes";
 import { ScrapProvider } from "../providers/ScrapContext";
 import { CreateScrapPage } from "../pages/CreateScrapPage";
+import { EditScrapPage } from "../pages/EditScrapPage";
 
 export const RoutesMain = () => {
    return (
@@ -21,6 +22,7 @@ export const RoutesMain = () => {
          <Route element={<PrivateRoutes />}>
             <Route path="/user" element={<UserPage />} />
             <Route path="/user/create" element={<CreateScrapPage />} /> 
+            <Route path="/user/edit" element={<EditScrapPage />} />
          </Route>
 
          <Route path="*" element={<ErrorPage />} />

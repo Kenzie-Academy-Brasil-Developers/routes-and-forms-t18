@@ -4,19 +4,23 @@ import { useContext } from "react";
 import { ScrapContext } from "../../../providers/ScrapContext";
 import styles from "./style.module.scss";
 
-export const CreateScrapForm = () => {
-    const { register, handleSubmit } = useForm();
+export const EditScrapForm = () => {
+    const { editingScrap, editScrap } = useContext(ScrapContext);
 
-    const { createScrap } = useContext(ScrapContext);
+    const { register, handleSubmit } = useForm({
+        values: {
+            content: editingScrap.content
+        }
+    });   
     
     const submit = (formData) => {
-        createScrap(formData);
+        editScrap(formData);
     }
 
     return(
         <form className={styles.form} onSubmit={handleSubmit(submit)}>
             <Textarea label="Sua mensagem" {...register("content")} />
-            <button type="submit" className="btn solid">Deixar um scrap</button>
+            <button type="submit" className="btn solid">Editar scrap</button>
         </form>
     )
 }
