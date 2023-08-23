@@ -14,8 +14,6 @@ export const ScrapProvider = ({ children }) => {
    const [editingScrap, setEditingScrap] = useState(null);
    // se for um modal ele pode ser um excelente condição de renderização para o modal.
 
-   console.log(editingScrap);
-
    const navigate = useNavigate();
 
    useEffect(() => {
