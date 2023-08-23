@@ -14,7 +14,7 @@ export const EditScrapForm = () => {
     });   
     
     const submit = (formData) => {
-        editScrap(formData);
+        editScrap.mutate(formData);
     }
 
     return(

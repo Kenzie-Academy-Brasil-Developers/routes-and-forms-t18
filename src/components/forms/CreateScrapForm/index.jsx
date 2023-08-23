@@ -10,7 +10,7 @@ export const CreateScrapForm = () => {
     const { createScrap } = useContext(ScrapContext);
     
     const submit = (formData) => {
-        createScrap(formData);
+        createScrap.mutate(formData);
     }
 
     return(

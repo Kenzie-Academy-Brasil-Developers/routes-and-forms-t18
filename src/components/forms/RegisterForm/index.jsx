@@ -13,6 +13,7 @@ export const RegisterForm = () => {
       handleSubmit,
       formState: { errors, isValid, isDirty },
    } = useForm({      
+      mode: 'onChange',
       resolver: zodResolver(registerFormSchema),
    });
 

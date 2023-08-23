@@ -13,7 +13,7 @@ export const ScrapList = () => {
                 <Link className="btn solid" to="/user/create">Deixar scrap</Link>
             </div>
             <ul>
-                {scrapList.map(scrap => (
+                {scrapList?.map(scrap => (
                     <ScrapCard key={scrap.id} scrap={scrap} />
                 ))}
             </ul>

@@ -4,41 +4,33 @@ import { useContext } from "react";
 import { UserContext } from "./UserContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const ScrapContext = createContext({});
 
 export const ScrapProvider = ({ children }) => {
    const { user } = useContext(UserContext);
+   
+   const client = useQueryClient();
 
-   const [scrapList, setScrapList] = useState([]);
+   const { data: scrapList } = useQuery({
+      queryKey: ["scraps"],
+      queryFn: async () => {
+         const { data } = await api.get("/scraps");
+         return data;
+      },
+   });
+
+   const revalidate = () => {
+      client.invalidateQueries({ queryKey: "scraps"});
+   }
+
    const [editingScrap, setEditingScrap] = useState(null);
-   // se for um modal ele pode ser um excelente condição de renderização para o modal.
 
    const navigate = useNavigate();
 
-   useEffect(() => {
-      const getScraps = async () => {
-         try {
-            const { data } = await api.get("/scraps");
-            setScrapList(data);
-         } catch (error) {
-            console.log(error);
-         }
-      };
-      getScraps();
-   }, []);
-   //executa uma vez quando o componente for montado.
-
-   /*
-   {
-    "author": "José da Silva",
-    "email": "josedasilva@email.com",
-    "content": "Belezinha meu amigão?",
-    "userId": 1
-    }
-    */
-   const createScrap = async (formData) => {
-      try {
+   const createScrap = useMutation({
+      mutationFn: async (formData) => {
          const token = localStorage.getItem("@TOKEN");
 
          const newScrap = {
@@ -48,73 +40,67 @@ export const ScrapProvider = ({ children }) => {
             ...formData,
          };
 
-         //Atualizando o servidor (back-end)
-         const { data } = await api.post("/scraps", newScrap, {
+         return await api.post("/scraps", newScrap, {
             headers: {
                Authorization: `Bearer ${token}`,
             },
          });
-
-         //Atualizar o front-end com manipulação de estado
-         setScrapList([...scrapList, data ]);
-
+      },
+      onSuccess: () => {
+         revalidate();
          toast.success("Scrap adicionado com sucesso!");
-
-         navigate("/user"); 
-      } catch (error) {
-         console.log(error);
+         navigate("/user");
       }
-   };
-
-   const deleteScrap = async (deletingId) => {
-      try {
+   })
+   
+   const deleteScrap = useMutation({
+      mutationFn: async (deletingId) => {
          const token = localStorage.getItem("@TOKEN");
 
-         await api.delete(`/scraps/${deletingId}`, {
-            headers: {
-               Authorization: `Bearer ${token}`
-            }
-         })
-
-         const newScrapList = scrapList.filter(scrap => scrap.id !== deletingId);
-         setScrapList(newScrapList);
-         toast.success("Scrap excluido com sucesso!");
-      } catch (error) {
-         console.log(error);
-      }
-   }
-
-   const editScrap = async (formData) => {
-      try {
-         const token = localStorage.getItem("@TOKEN");
-         
-         const { data } = await api.patch(`/scraps/${editingScrap.id}`, formData, {
+         return await api.delete(`/scraps/${deletingId}`, {
             headers: {
                Authorization: `Bearer ${token}`,
             },
-         })
+         });  
+      },
+      onSuccess: () => {
+         revalidate();
+         toast.success("Scrap excluido com sucesso!");
+      }
+   })
 
-         const newScrapList = scrapList.map(scrap => {
-            //Da nota que eu quero mudar
-            if(scrap.id === editingScrap.id){
-               return data;
-            } else {
-               return scrap;
-            }
-         })
+   const editScrap = useMutation({
+      mutationFn: async (formData) => {
+         const token = localStorage.getItem("@TOKEN");
 
-         setScrapList(newScrapList);         
+         return await api.patch(`/scraps/${editingScrap.id}`, formData, {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         });
+      },
+      onSuccess: () => {
+         revalidate();
          setEditingScrap(null);
 
          toast.success("Scrap editado com sucesso!");
 
          navigate("/user");
-
-
-      } catch (error) {
-         console.log(error)
       }
-   }
+   })
 
-   return <ScrapContext.Provider value={{ scrapList, createScrap, deleteScrap, editScrap, editingScrap, setEditingScrap }}>{children}</ScrapContext.Provider>;
+   return (
+      <ScrapContext.Provider
+         value={{
+            scrapList,
+            createScrap,
+            deleteScrap,
+            editScrap,
+            editingScrap,
+            setEditingScrap,
+         }}
+      >
+         {children}
+      </ScrapContext.Provider>
+   );
 };

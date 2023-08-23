@@ -34,7 +34,7 @@ export const ScrapCard = ({ scrap }) => {
                      <MdOutlineEdit size={30} />
                   </button>
                   <button
-                     onClick={() => deleteScrap(scrap.id)}
+                     onClick={() => deleteScrap.mutate(scrap.id)}
                      title="Remover"
                      aria-label="remove"
                   >
